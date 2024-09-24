@@ -24,22 +24,25 @@
                 text-align: center;
                 margin-bottom: 20px;
             }  
+            .title-container h1 {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
+            .title-container h2 {
+                font-size: 14px;
+                font-weight: normal;
+                margin-top: 0;
+            }
             .divider {
                 width: 100%;
                 max-width: 800px;
                 height: 2px;
-                background-image: linear-gradient(to right, transparent, black, transparent); /* Black divider for light mode */
+                background-image: linear-gradient(to right, transparent, black, transparent);
                 margin: 0 auto 50px;
             }
-
             body.dark-mode .divider {
-                background-image: linear-gradient(to right, transparent, white, transparent); /* White divider for dark mode */
-            }
-
-            .title-container h1 {
-                font-size: 24px;
-                font-weight: bold;
-                margin-bottom: 10px;
+                background-image: linear-gradient(to right, transparent, white, transparent);
             }
             .container {
                 display: flex;
@@ -55,7 +58,7 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                margin bottom: 20px;
+                margin-bottom: 20px;
             }
             .metrics-tables {
                 width: 55%;
@@ -96,7 +99,7 @@
                 max-width: 300px;
                 margin-bottom: 20px;
                 position: relative;
-                padding-top: 56.25%; /* 16:9 Aspect Ratio (9 / 16 = 0.5625) */
+                padding-top: 56.25%;
                 overflow: hidden;
                 border-radius: 5px;                
             }
@@ -225,19 +228,40 @@
             }
             #riskOnTable th:first-child, #riskOffTable th:first-child,
             #riskOnTable td:first-child, #riskOffTable td:first-child {
-                width: 30%; /* Adjust this value as needed */
+                width: 30%;
             }
             #riskOnTable th:not(:first-child), #riskOffTable th:not(:first-child),
             #riskOnTable td:not(:first-child), #riskOffTable td:not(:first-child) {
-                width: 17.5%; /* (100% - 30%) / 4 */
+                width: 17.5%;
             }
-      
+            /* Responsive Design */
+            @media (max-width: 768px) {
+                .container {
+                    flex-direction: column;
+                    align-items: center;
+                }
+                .risk-info, .metrics-tables {
+                    width: 100%;
+                    max-width: 100%;
+                }
+                .risk-image-container {
+                    margin-top: 20px;
+                }
+            }
+            /* Footer Style */
+            .footer {
+                text-align: center;
+                font-size: 10px;
+                margin-top: 50px;
+                padding-bottom: 20px;
+            }
         </style>
     </head>
     <body class="dark-mode">
         <button id="darkModeToggle">light | dark</button>
         <div class="title-container">
             <h1><a href="https://sojournfinance.substack.com" target="_blank" style="text-decoration: none; color: inherit;">@sojournfinance</a></h1>
+            <h2>Last updated: 2024-09-24 16:20:26</h2>
         </div>
         <div class="divider"></div>
         <div class="container">
@@ -249,9 +273,6 @@
                     </div>
                     <div class="risk-score">Risk: 8.3/10</div>
                 </div>                
-                <div class="risk-image-container">
-                    <img src="https://cdn.midjourney.com/8a144ea8-91a3-424b-ab78-1d3bbfcd75bf/0_0.png" alt="Risk Image" class="risk-image">
-                </div>
             </div>
             <div class="metrics-tables">
                 <div class="table-title">Sojourn Insight Metrics (SIMs)</div>
@@ -268,7 +289,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td>Copper</td><td>$4.52</td><td>+5.34%</td><td>+11.94%</td><td>+23.80%</td></tr><tr><td>VIX</td><td>15.57</td><td>-2.01%</td><td>-14.07%</td><td>-7.87%</td></tr><tr><td>Crude Oil</td><td>$71.62</td><td>+1.78%</td><td>-8.59%</td><td>-20.14%</td></tr><tr><td>Bitcoin USD Exchange Rate</td><td>$63,749.54</td><td>+0.66%</td><td>+1.38%</td><td>+142.79%</td></tr><tr><td>Japanese Yen Exchange Rate</td><td>¥143.35</td><td>-0.45%</td><td>-2.46%</td><td>-3.42%</td></tr><tr><td>Russell 2000 ETF</td><td>$221.20</td><td>+0.20%</td><td>+6.36%</td><td>+26.36%</td></tr><tr><td>10-Year Treasury Yield</td><td>3.73%</td><td>-0.19%</td><td>-3.12%</td><td>-17.83%</td></tr><tr><td>S&P 500 ETF</td><td>$570.50</td><td>+0.15%</td><td>+5.57%</td><td>+33.77%</td></tr><tr><td>2-Year Treasury Yield</td><td>4.50%</td><td>-0.11%</td><td>-10.98%</td><td>-15.34%</td></tr><tr><td>Euro Exchange Rate</td><td>$1.12</td><td>+0.07%</td><td>+1.56%</td><td>+4.88%</td></tr>
+                                <tr><td>Copper</td><td>$4.53</td><td>+5.55%</td><td>+12.17%</td><td>+24.04%</td></tr><tr><td>VIX</td><td>15.39</td><td>-3.15%</td><td>-15.07%</td><td>-8.93%</td></tr><tr><td>Crude Oil</td><td>$71.54</td><td>+1.66%</td><td>-8.69%</td><td>-20.23%</td></tr><tr><td>Bitcoin USD Exchange Rate</td><td>$64,220.18</td><td>+1.41%</td><td>+2.13%</td><td>+144.58%</td></tr><tr><td>Japanese Yen Exchange Rate</td><td>¥143.15</td><td>-0.60%</td><td>-2.60%</td><td>-3.56%</td></tr><tr><td>S&P 500 ETF</td><td>$571.30</td><td>+0.29%</td><td>+5.72%</td><td>+33.96%</td></tr><tr><td>Euro Exchange Rate</td><td>$1.12</td><td>+0.19%</td><td>+1.68%</td><td>+5.01%</td></tr><tr><td>2-Year Treasury Yield</td><td>4.49%</td><td>-0.18%</td><td>-11.04%</td><td>-15.40%</td></tr><tr><td>Russell 2000 ETF</td><td>$221.13</td><td>+0.17%</td><td>+6.33%</td><td>+26.32%</td></tr><tr><td>10-Year Treasury Yield</td><td>3.74%</td><td>-0.08%</td><td>-3.01%</td><td>-17.75%</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -284,17 +305,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td>Natural Gas</td><td>$2.56</td><td>-2.10%</td><td>+19.09%</td><td>-3.07%</td></tr><tr><td>Gold</td><td>$2,681.70</td><td>+2.10%</td><td>+8.72%</td><td>+39.92%</td></tr>
+                                <tr><td>Gold</td><td>$2,682.10</td><td>+2.12%</td><td>+8.73%</td><td>+39.94%</td></tr><tr><td>Natural Gas</td><td>$2.58</td><td>-1.19%</td><td>+20.20%</td><td>-2.16%</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
+            <!-- Move the risk image below the tables for mobile optimization -->
+            <div class="risk-image-container">
+                <img src="https://cdn.midjourney.com/8a144ea8-91a3-424b-ab78-1d3bbfcd75bf/0_0.png" alt="Risk Image" class="risk-image">
+            </div>
         </div>
         <div class="divider"></div>
         <div class="analysis">
             <h2>Summary</h2>
-            <p>Market sentiment is cautiously optimistic, with a Risk Score of 8.3. Short-term analysis shows a mixed picture, with the S&P 500 and Russell 2000 ETFs experiencing slight gains, while the VIX volatility index decreased. Crude oil and natural gas prices moved in opposite directions. Mid-term analysis reveals a more bullish tone, with the S&P 500 and Russell 2000 ETFs up 33.77% and 26.36% over the past year, respectively. Gold and copper prices have also surged, indicating inflation concerns. Treasury yields have declined, suggesting a potential economic slowdown. Overall, the market is navigating a complex landscape, balancing growth and inflation worries.</p>
+            <p>Market sentiment is cautiously optimistic, with a Risk Score of 8.3. Short-term analysis shows a mixed picture, with the S&P 500 and Russell 2000 ETFs posting modest gains, while the VIX declined. Crude oil and natural gas prices are volatile, with crude oil up 1.66% and natural gas down 1.19%. Gold and copper prices surged, indicating a flight to safe-haven assets.
+
+Mid-term analysis reveals a more bullish tone, with the S&P 500 and Russell 2000 ETFs up 5.72% and 6.33% over the past month, respectively. The 10-Year Treasury Yield declined 3.01% over the past month, indicating a decrease in investor risk appetite. Bitcoin's 144.58% gain over the past year suggests continued interest in alternative assets.
+
+Overall, market sentiment is cautiously optimistic, with investors balancing risk and reward in a volatile market environment.</p>
                         
             <h2>Short-term Analysis</h2>
             <p>Based on the provided metrics, here is a short-term risk analysis:
@@ -305,54 +334,67 @@
 
 1. **Equity Markets:** S&P 500 and Russell 2000 ETFs show positive 1D% and 1M% returns, indicating a bullish trend. However, the 1Y% returns are high, suggesting potential overvaluation.
 2. **Volatility:** VIX is decreasing, indicating lower expected volatility, which could lead to complacency among investors.
-3. **Commodities:** Crude Oil and Natural Gas prices are volatile, with Crude Oil showing a significant 1M% decline. Gold and Copper prices are increasing, potentially indicating inflation concerns.
-4. **Currencies:** Euro and Japanese Yen exchange rates are relatively stable, while Bitcoin's price is increasing, potentially indicating speculative behavior.
-5. **Interest Rates:** 10-Year and 2-Year Treasury Yields are decreasing, indicating a potential flight to safety or expectations of lower economic growth.
+3. **Commodities:** Crude Oil and Natural Gas prices are fluctuating, while Gold and Copper prices are increasing, indicating potential inflationary pressures.
+4. **Currencies:** Euro and Japanese Yen exchange rates are relatively stable, while Bitcoin's price is increasing, indicating potential speculative activity.
+5. **Interest Rates:** 10-Year and 2-Year Treasury Yields are decreasing, indicating a potential shift towards a more dovish monetary policy.
 
 **Short-term Risks:**
 
 1. **Market Correction:** Overvaluation in equity markets, combined with decreasing volatility, may lead to a market correction.
-2. **Inflation Concerns:** Increasing commodity prices, particularly Gold and Copper, may indicate inflation concerns, which could lead to interest rate hikes.
-3. **Currency Fluctuations:** Bitcoin's price increase may indicate speculative behavior, while currency fluctuations can impact trade and economic growth.
-4. **Economic Slowdown:** Decreasing Treasury Yields may indicate expectations of lower economic growth, potentially leading to a recession.
+2. **Inflationary Pressures:** Increasing commodity prices and potential wage growth may lead to higher inflation, affecting interest rates and currency values.
+3. **Speculative Activity:** Bitcoin's price increase and potential speculative activity in other assets may lead to market instability.
+4. **Monetary Policy:** A shift towards a more dovish monetary policy may lead to a decrease in interest rates, affecting currency values and asset prices.
 
 **Recommendation:**
 
-Given the high risk score, it is essential to maintain a cautious approach, diversify portfolios, and monitor market developments closely. Consider reducing exposure to overvalued assets, increasing allocation to safe-haven assets, and hedging against potential inflation and currency fluctuations.</p>
+Investors should be cautious and consider diversifying their portfolios to mitigate potential risks. A balanced approach, including a mix of low-risk and high-risk assets, may help navigate the current market environment.</p>
             
             <h2>Mid-term Analysis</h2>
             <p>Based on the provided metrics, here's a mid-term market analysis:
 
 **Overall Market Sentiment:**
-The S&P 500 ETF and Russell 2000 ETF have shown positive returns over the past month (5.57% and 6.36%, respectively) and year (33.77% and 26.36%, respectively), indicating a bullish market sentiment. The VIX, a measure of market volatility, has decreased by 14.07% over the past month, further supporting this sentiment.
+The S&P 500 ETF and Russell 2000 ETF have shown positive returns over the past month (5.72% and 6.33%, respectively) and year (33.96% and 26.32%, respectively), indicating a bullish market sentiment. The VIX, a measure of market volatility, has decreased by 15.07% over the past month, further supporting this sentiment.
 
 **Commodity Markets:**
-Crude oil prices have declined by 8.59% over the past month, while natural gas prices have increased by 19.09%. Gold prices have surged by 8.72% over the past month, and copper prices have increased by 11.94%. These movements suggest a mixed outlook for commodities.
+Crude oil prices have declined by 8.69% over the past month, while natural gas prices have increased by 20.20%. Gold prices have surged by 8.73% over the past month, and copper prices have increased by 12.17%. These movements suggest a mixed outlook for commodities.
 
 **Currency Markets:**
-The euro exchange rate has appreciated by 1.56% over the past month, while the Japanese yen exchange rate has depreciated by 2.46%. The bitcoin USD exchange rate has increased by 1.38% over the past month.
+The euro exchange rate has appreciated by 1.68% over the past month, while the Japanese yen exchange rate has depreciated by 2.60%. The bitcoin USD exchange rate has increased by 2.13% over the past month.
 
 **Bond Markets:**
-The 10-year Treasury yield has decreased by 3.12% over the past month, and the 2-year Treasury yield has decreased by 10.98%. These movements suggest a decrease in interest rates, which could be a sign of a slowing economy.
+The 10-year Treasury yield has decreased by 3.01% over the past month, while the 2-year Treasury yield has decreased by 11.04%. This suggests a flattening of the yield curve, which could be a sign of a slowing economy.
 
 **Mid-term Outlook:**
-Based on these metrics, the mid-term market outlook appears to be cautiously optimistic. The bullish sentiment in the equity markets, combined with the decrease in market volatility, suggests that investors are confident in the market's ability to continue growing. However, the mixed outlook for commodities and the decrease in interest rates suggest that there may be some underlying concerns about the economy's growth prospects.
+Based on these metrics, the mid-term market outlook appears to be cautiously optimistic. The bullish sentiment in the equity markets, combined with the decrease in market volatility, suggests that investors are confident in the market's ability to continue growing. However, the mixed outlook for commodities and the flattening of the yield curve suggest that there may be some underlying concerns about the economy's growth prospects.
 
 **Risk Score:**
-The risk score of 8.3 suggests that the market is currently at a moderate level of risk. While there are some positive indicators, such as the bullish sentiment in the equity markets, there are also some negative indicators, such as the decrease in interest rates and the mixed outlook for commodities. Investors should exercise caution and carefully consider their investment decisions in this environment.</p>
+Given the overall market sentiment and the mixed outlook for commodities and bond markets, I would maintain the current risk score of 8.3. This score reflects a moderate level of risk, indicating that investors should be cautious but not overly concerned about the market's prospects.
+
+**Recommendations:**
+Based on this analysis, I would recommend the following:
+
+1. Maintain a diversified portfolio with a mix of equities, bonds, and commodities.
+2. Consider increasing exposure to gold and other safe-haven assets as a hedge against potential market volatility.
+3. Monitor the yield curve and adjust bond allocations accordingly.
+4. Keep a close eye on commodity prices and adjust allocations based on market movements.
+
+Please note that this analysis is based on the provided metrics and is intended for general information purposes only. It is not intended to be investment advice or a recommendation to buy or sell any specific security.</p>
             
             <h2>Closing Thoughts</h2>
             <p>Based on the provided data, here are some closing thoughts on what to watch closely in the short term:
 
-1. **Market Volatility**: The VIX has decreased by 14.07% in the last month, indicating a decrease in market volatility. However, with a Risk Score of 8.3, it's essential to monitor the VIX for any sudden spikes, which could indicate increased market uncertainty.
-2. **Interest Rates**: The 10-Year Treasury Yield has decreased by 3.12% in the last month, while the 2-Year Treasury Yield has decreased by 10.98%. This flattening of the yield curve could be a sign of an impending economic slowdown. Keep an eye on interest rate movements and their impact on the overall market.
-3. **Commodity Prices**: Crude Oil has decreased by 8.59% in the last month, while Natural Gas has increased by 19.09%. Copper has also seen a significant increase of 11.94%. Monitor these commodity prices, as they can have a significant impact on inflation and the overall economy.
-4. **Cryptocurrency**: Bitcoin's price has increased by 142.79% in the last year, but its short-term movements have been relatively stable. Keep an eye on cryptocurrency prices, as they can be highly volatile and impact the broader market.
-5. **Global Economic Trends**: The Euro Exchange Rate has increased by 4.88% in the last year, while the Japanese Yen Exchange Rate has decreased by 3.42%. Monitor these exchange rates, as they can indicate changes in global economic trends and trade relationships.
+1. **Market Volatility**: The VIX has decreased by 15.07% in the last month, indicating a decrease in market volatility. However, with a Risk Score of 8.3, it's essential to monitor the VIX for any sudden spikes, which could indicate increased market uncertainty.
+2. **Interest Rates**: The 10-Year Treasury Yield has decreased by 3.01% in the last month, while the 2-Year Treasury Yield has decreased by 11.04%. This flattening of the yield curve could be a sign of an impending economic slowdown. Keep an eye on interest rate movements and their impact on the overall market.
+3. **Commodity Prices**: Crude Oil has decreased by 8.69% in the last month, while Natural Gas has increased by 20.20%. Copper has also seen a significant increase of 12.17%. Monitor these commodity prices, as they can have a significant impact on inflation and the overall economy.
+4. **Currency Fluctuations**: The Euro Exchange Rate has increased by 1.68% in the last month, while the Japanese Yen Exchange Rate has decreased by 2.60%. Keep an eye on these currency fluctuations, as they can impact international trade and the global economy.
+5. **Cryptocurrency**: Bitcoin's price has increased by 2.13% in the last month, with a significant increase of 144.58% in the last year. Monitor the cryptocurrency market, as it can be highly volatile and impact the overall market sentiment.
 
-In the short term, it's essential to watch for any sudden changes in market volatility, interest rates, commodity prices, cryptocurrency prices, and global economic trends. These factors can have a significant impact on the overall market and require close monitoring to make informed investment decisions.</p>
+In the short term, it's essential to watch for any sudden changes in market volatility, interest rates, commodity prices, currency fluctuations, and cryptocurrency prices. These factors can have a significant impact on the overall market and economy, and being aware of their movements can help you make informed investment decisions.</p>
         </div>
-        
+        <!-- Footer with Disclaimer -->
+        <div class="footer">
+            Disclaimer: This content is for informational purposes only and should not be considered as financial advice. Always conduct your own research and consult with a financial advisor before making investment decisions. This project is a work in process. Data may be delayed and parameters will change with time as we update our APIs, programs and manual operations. Meta-based analysis. Accuracy or correctness cannot be guaranteed.
+        </div>
         <script>
         // Speedometer
         let speedometerChart;
@@ -436,14 +478,14 @@ In the short term, it's essential to watch for any sudden changes in market vola
                 $('#riskOnTable tr, #riskOffTable tr').css('background-color', 'transparent');
             });
 
-            // Ensure transparency on window resize (in case of responsive design changes)
+            // Ensure transparency on window resize
             $(window).resize(function() {
                 $('#riskOnTable, #riskOffTable, .dataTables_wrapper').css('background-color', 'transparent');
                 $('#riskOnTable tr, #riskOffTable tr').css('background-color', 'transparent');
             });
         });
 
-                // Format text
+        // Format text
         function formatText(text) {
             return text
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
