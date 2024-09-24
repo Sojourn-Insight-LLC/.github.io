@@ -1,0 +1,462 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Daily Risk Analysis</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+                transition: background-color 0.3s, color 0.3s;
+                background-color: #ffffff;
+            }
+            .title-container {
+                text-align: center;
+                margin-bottom: 20px;
+            }  
+            .divider {
+                width: 100%;
+                max-width: 800px;
+                height: 2px;
+                background-image: linear-gradient(to right, transparent, black, transparent); /* Black divider for light mode */
+                margin: 0 auto 50px;
+            }
+
+            body.dark-mode .divider {
+                background-image: linear-gradient(to right, transparent, white, transparent); /* White divider for dark mode */
+            }
+
+            .title-container h1 {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+            .container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 50px;
+            }
+            .risk-info {
+                width: 100%;
+                max-width: 40%;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin bottom: 20px;
+            }
+            .metrics-tables {
+                width: 55%;
+            }
+            h1, h2 {
+                color: #2c3e50;
+                margin-top: 0;
+            }
+            .speedometer-container {
+                width: 300px;
+                height: 180px;
+                position: relative;
+                margin: 0 auto;
+            }
+            #speedometer {
+                width: 100%;
+                height: auto%;
+                display: block;
+                margin: 0 auto;
+                padding: 0;
+            }
+            .table-title {
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+            .risk-score {
+                position: absolute;
+                bottom: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 24px;
+                font-weight: bold;
+            }
+            .risk-image-container {
+                width: 100%;
+                max-width: 300px;
+                margin-bottom: 20px;
+                position: relative;
+                padding-top: 56.25%; /* 16:9 Aspect Ratio (9 / 16 = 0.5625) */
+                overflow: hidden;
+                border-radius: 5px;                
+            }
+            .risk-image {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) scale(1.1);
+                width: 110%;
+                height: auto;
+                border-radius: 5px;
+                object-fit: cover;
+            }            
+            #darkModeToggle {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 10px;
+                background-color: #000000;
+                color: #f0f0f0;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 12px;
+                margin-bottom: 20px;
+                background: transparent;
+                background-color: transparent;
+            }
+            th, td {
+                padding: 8px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            .risk-on-table {
+                border-top: 3px solid #2ECC40;
+                background: transparent;
+            }
+            .risk-off-table {
+                border-top: 3px solid #FF4136;
+                background: transparent;
+            }
+            body.dark-mode {
+                background-color: #000000 !important;
+                color: #ffffff;
+            }
+            .dark-mode h1, .dark-mode h2 {
+                color: #f0f0f0;
+            }
+            .dark-mode th {
+                background-color: #2c3e50;
+                color: #f0f0f0;
+            }
+            .dark-mode td {
+                border-bottom: 1px solid #444;
+                color: #f0f0f0;
+            }
+            .dark-mode .risk-on-table {
+                border-top: 3px solid #2ECC40;
+            }
+            .dark-mode .risk-off-table {
+                border-top: 3px solid #FF4136;
+            }
+            .dark-mode table {
+                color: #f0f0f0;
+                background: transparent;
+            }
+            .dark-mode .dataTables_wrapper .dataTables_length,
+            .dark-mode .dataTables_wrapper .dataTables_filter,
+            .dark-mode .dataTables_wrapper .dataTables_info,
+            .dark-mode .dataTables_wrapper .dataTables_processing,
+            .dark-mode .dataTables_wrapper .dataTables_paginate {
+                color: #f0f0f0;
+                background: transparent;
+            }
+            .dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button {
+                color: #f0f0f0 !important;
+            }
+            .dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+            .dark-mode .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+                color: #333 !important;
+                background: #f0f0f0 !important;
+            }
+            .dark-mode .even {
+                background-color: #2c3e50 !important;
+            }
+            .dark-mode .odd {
+                background-color: #34495e !important;
+            }
+            h1 a:hover {
+                text-decoration: underline;
+            }
+            #riskOnTable, #riskOffTable, .dataTables_wrapper {
+                background-color: transparent !important;
+            }
+            #riskOnTable tr, #riskOffTable tr {
+                background-color: transparent !important;
+            }
+            .dark-mode #riskOnTable tr, .dark-mode #riskOffTable tr {
+                color: #f0f0f0;
+            }
+            .metrics-tables-container {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+            .table-wrapper {
+                width: 100%;
+                overflow-x: auto;
+            }
+            #riskOnTable, #riskOffTable {
+                width: 100%;
+                table-layout: fixed;
+            }
+            #riskOnTable th, #riskOffTable th,
+            #riskOnTable td, #riskOffTable td {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            #riskOnTable th:first-child, #riskOffTable th:first-child,
+            #riskOnTable td:first-child, #riskOffTable td:first-child {
+                width: 30%; /* Adjust this value as needed */
+            }
+            #riskOnTable th:not(:first-child), #riskOffTable th:not(:first-child),
+            #riskOnTable td:not(:first-child), #riskOffTable td:not(:first-child) {
+                width: 17.5%; /* (100% - 30%) / 4 */
+            }
+      
+        </style>
+    </head>
+    <body class="dark-mode">
+        <button id="darkModeToggle">light | dark</button>
+        <div class="title-container">
+            <h1><a href="https://sojournfinance.substack.com" target="_blank" style="text-decoration: none; color: inherit;">@sojournfinance</a></h1>
+        </div>
+        <div class="divider"></div>
+        <div class="container">
+            <div class="risk-info">
+                <h2>Bullish Sentiment</h2>                
+                <div class="speedometer-container">
+                    <div style="position: relative; width: 100%; height: 0; padding-bottom: 50%;">
+                        <canvas id="speedometer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                    </div>
+                    <div class="risk-score">Risk: 8.3/10</div>
+                </div>                
+                <div class="risk-image-container">
+                    <img src="https://cdn.midjourney.com/8a144ea8-91a3-424b-ab78-1d3bbfcd75bf/0_0.png" alt="Risk Image" class="risk-image">
+                </div>
+            </div>
+            <div class="metrics-tables">
+                <div class="table-title">Sojourn Insight Metrics (SIMs)</div>
+                <div class="metrics-tables-container">
+                    <div class="table-wrapper">
+                        <table id="riskOnTable" class="risk-on-table">
+                            <thead>
+                                <tr>
+                                    <th><span style="color: #2ECC40;">RISK ON 📈</span></th>
+                                    <th>Current</th>
+                                    <th>1D %</th>
+                                    <th>1M %</th>
+                                    <th>1Y %</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Copper</td><td>$4.52</td><td>+5.34%</td><td>+11.94%</td><td>+23.80%</td></tr><tr><td>VIX</td><td>15.57</td><td>-2.01%</td><td>-14.07%</td><td>-7.87%</td></tr><tr><td>Crude Oil</td><td>$71.62</td><td>+1.78%</td><td>-8.59%</td><td>-20.14%</td></tr><tr><td>Bitcoin USD Exchange Rate</td><td>$63,749.54</td><td>+0.66%</td><td>+1.38%</td><td>+142.79%</td></tr><tr><td>Japanese Yen Exchange Rate</td><td>¥143.35</td><td>-0.45%</td><td>-2.46%</td><td>-3.42%</td></tr><tr><td>Russell 2000 ETF</td><td>$221.20</td><td>+0.20%</td><td>+6.36%</td><td>+26.36%</td></tr><tr><td>10-Year Treasury Yield</td><td>3.73%</td><td>-0.19%</td><td>-3.12%</td><td>-17.83%</td></tr><tr><td>S&P 500 ETF</td><td>$570.50</td><td>+0.15%</td><td>+5.57%</td><td>+33.77%</td></tr><tr><td>2-Year Treasury Yield</td><td>4.50%</td><td>-0.11%</td><td>-10.98%</td><td>-15.34%</td></tr><tr><td>Euro Exchange Rate</td><td>$1.12</td><td>+0.07%</td><td>+1.56%</td><td>+4.88%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="riskOffTable" class="risk-off-table">
+                            <thead>
+                                <tr>
+                                    <th><span style="color: #FF4136;">RISK OFF 📉</span></th>
+                                    <th>Current</th>
+                                    <th>1D %</th>
+                                    <th>1M %</th>
+                                    <th>1Y %</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Natural Gas</td><td>$2.56</td><td>-2.10%</td><td>+19.09%</td><td>-3.07%</td></tr><tr><td>Gold</td><td>$2,681.70</td><td>+2.10%</td><td>+8.72%</td><td>+39.92%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="analysis">
+            <h2>Summary</h2>
+            <p>Market sentiment is cautiously optimistic, with a Risk Score of 8.3. Short-term analysis shows a mixed picture, with the S&P 500 and Russell 2000 ETFs experiencing slight gains, while the VIX volatility index decreased. Crude oil and natural gas prices moved in opposite directions. Mid-term analysis reveals a more bullish tone, with the S&P 500 and Russell 2000 ETFs up 33.77% and 26.36% over the past year, respectively. Gold and copper prices have also surged, indicating inflation concerns. Treasury yields have declined, suggesting a potential economic slowdown. Overall, the market is navigating a complex landscape, balancing growth and inflation worries.</p>
+                        
+            <h2>Short-term Analysis</h2>
+            <p>Based on the provided metrics, here is a short-term risk analysis:
+
+**Overall Risk Score: 8.3** (High)
+
+**Key Observations:**
+
+1. **Equity Markets:** S&P 500 and Russell 2000 ETFs show positive 1D% and 1M% returns, indicating a bullish trend. However, the 1Y% returns are high, suggesting potential overvaluation.
+2. **Volatility:** VIX is decreasing, indicating lower expected volatility, which could lead to complacency among investors.
+3. **Commodities:** Crude Oil and Natural Gas prices are volatile, with Crude Oil showing a significant 1M% decline. Gold and Copper prices are increasing, potentially indicating inflation concerns.
+4. **Currencies:** Euro and Japanese Yen exchange rates are relatively stable, while Bitcoin's price is increasing, potentially indicating speculative behavior.
+5. **Interest Rates:** 10-Year and 2-Year Treasury Yields are decreasing, indicating a potential flight to safety or expectations of lower economic growth.
+
+**Short-term Risks:**
+
+1. **Market Correction:** Overvaluation in equity markets, combined with decreasing volatility, may lead to a market correction.
+2. **Inflation Concerns:** Increasing commodity prices, particularly Gold and Copper, may indicate inflation concerns, which could lead to interest rate hikes.
+3. **Currency Fluctuations:** Bitcoin's price increase may indicate speculative behavior, while currency fluctuations can impact trade and economic growth.
+4. **Economic Slowdown:** Decreasing Treasury Yields may indicate expectations of lower economic growth, potentially leading to a recession.
+
+**Recommendation:**
+
+Given the high risk score, it is essential to maintain a cautious approach, diversify portfolios, and monitor market developments closely. Consider reducing exposure to overvalued assets, increasing allocation to safe-haven assets, and hedging against potential inflation and currency fluctuations.</p>
+            
+            <h2>Mid-term Analysis</h2>
+            <p>Based on the provided metrics, here's a mid-term market analysis:
+
+**Overall Market Sentiment:**
+The S&P 500 ETF and Russell 2000 ETF have shown positive returns over the past month (5.57% and 6.36%, respectively) and year (33.77% and 26.36%, respectively), indicating a bullish market sentiment. The VIX, a measure of market volatility, has decreased by 14.07% over the past month, further supporting this sentiment.
+
+**Commodity Markets:**
+Crude oil prices have declined by 8.59% over the past month, while natural gas prices have increased by 19.09%. Gold prices have surged by 8.72% over the past month, and copper prices have increased by 11.94%. These movements suggest a mixed outlook for commodities.
+
+**Currency Markets:**
+The euro exchange rate has appreciated by 1.56% over the past month, while the Japanese yen exchange rate has depreciated by 2.46%. The bitcoin USD exchange rate has increased by 1.38% over the past month.
+
+**Bond Markets:**
+The 10-year Treasury yield has decreased by 3.12% over the past month, and the 2-year Treasury yield has decreased by 10.98%. These movements suggest a decrease in interest rates, which could be a sign of a slowing economy.
+
+**Mid-term Outlook:**
+Based on these metrics, the mid-term market outlook appears to be cautiously optimistic. The bullish sentiment in the equity markets, combined with the decrease in market volatility, suggests that investors are confident in the market's ability to continue growing. However, the mixed outlook for commodities and the decrease in interest rates suggest that there may be some underlying concerns about the economy's growth prospects.
+
+**Risk Score:**
+The risk score of 8.3 suggests that the market is currently at a moderate level of risk. While there are some positive indicators, such as the bullish sentiment in the equity markets, there are also some negative indicators, such as the decrease in interest rates and the mixed outlook for commodities. Investors should exercise caution and carefully consider their investment decisions in this environment.</p>
+            
+            <h2>Closing Thoughts</h2>
+            <p>Based on the provided data, here are some closing thoughts on what to watch closely in the short term:
+
+1. **Market Volatility**: The VIX has decreased by 14.07% in the last month, indicating a decrease in market volatility. However, with a Risk Score of 8.3, it's essential to monitor the VIX for any sudden spikes, which could indicate increased market uncertainty.
+2. **Interest Rates**: The 10-Year Treasury Yield has decreased by 3.12% in the last month, while the 2-Year Treasury Yield has decreased by 10.98%. This flattening of the yield curve could be a sign of an impending economic slowdown. Keep an eye on interest rate movements and their impact on the overall market.
+3. **Commodity Prices**: Crude Oil has decreased by 8.59% in the last month, while Natural Gas has increased by 19.09%. Copper has also seen a significant increase of 11.94%. Monitor these commodity prices, as they can have a significant impact on inflation and the overall economy.
+4. **Cryptocurrency**: Bitcoin's price has increased by 142.79% in the last year, but its short-term movements have been relatively stable. Keep an eye on cryptocurrency prices, as they can be highly volatile and impact the broader market.
+5. **Global Economic Trends**: The Euro Exchange Rate has increased by 4.88% in the last year, while the Japanese Yen Exchange Rate has decreased by 3.42%. Monitor these exchange rates, as they can indicate changes in global economic trends and trade relationships.
+
+In the short term, it's essential to watch for any sudden changes in market volatility, interest rates, commodity prices, cryptocurrency prices, and global economic trends. These factors can have a significant impact on the overall market and require close monitoring to make informed investment decisions.</p>
+        </div>
+        
+        <script>
+        // Speedometer
+        let speedometerChart;
+
+        function updateSpeedometer(darkMode) {
+            if (speedometerChart) {
+                speedometerChart.destroy();
+            }
+        
+            const speedometer = document.getElementById('speedometer').getContext('2d');
+            speedometerChart = new Chart(speedometer, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [1, 1, 1, 1, 1],
+                        backgroundColor: ['#FF4136', '#FF851B', '#FFDC00', '#A2D959', '#2ECC40'],
+                        borderWidth: 0
+                    }, {
+                        data: [8.3, 1.6999999999999993],
+                        backgroundColor: [
+                            darkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 1)', 
+                            darkMode ? 'rgba(128, 128, 128, 0.3)' : 'rgba(0, 0, 0, 0)'
+                        ],
+                        borderWidth: 0,
+                        circumference: 180,
+                        rotation: 270
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    rotation: -90,
+                    circumference: 180,
+                    cutout: '75%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false },
+                    },
+                    layout: {
+                        padding: {
+                            left: 20,
+                            right: 20,
+                            top: 0,
+                            bottom: 0
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize DataTables and set up dark mode toggle
+        $(document).ready(function() {
+            $('#riskOnTable, #riskOffTable').DataTable({
+                paging: false,
+                searching: false,
+                info: false,
+                order: [[2, 'desc']],
+                stripeClasses: [],
+                columnDefs: [
+                    { width: '30%', targets: 0 },
+                    { width: '17.5%', targets: [1, 2, 3, 4] }
+                ],
+                autoWidth: false,
+                initComplete: function(settings, json) {
+                    $('#riskOnTable, #riskOffTable, .dataTables_wrapper').css('background-color', 'transparent');
+                    $('#riskOnTable tr, #riskOffTable tr').css('background-color', 'transparent');
+                }
+            });
+
+            // Check initial dark mode state
+            const initialDarkMode = $('body').hasClass('dark-mode');
+            updateSpeedometer(initialDarkMode);
+
+            // Dark mode toggle
+            $('#darkModeToggle').click(function() {
+                $('body').toggleClass('dark-mode');
+                updateSpeedometer($('body').hasClass('dark-mode'));
+                
+                // Reapply transparent background after dark mode toggle
+                $('#riskOnTable, #riskOffTable, .dataTables_wrapper').css('background-color', 'transparent');
+                $('#riskOnTable tr, #riskOffTable tr').css('background-color', 'transparent');
+            });
+
+            // Ensure transparency on window resize (in case of responsive design changes)
+            $(window).resize(function() {
+                $('#riskOnTable, #riskOffTable, .dataTables_wrapper').css('background-color', 'transparent');
+                $('#riskOnTable tr, #riskOffTable tr').css('background-color', 'transparent');
+            });
+        });
+
+                // Format text
+        function formatText(text) {
+            return text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/- (.*?)\n/g, '<li>$1</li>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>');
+        }
+        
+        document.querySelectorAll('.analysis p').forEach(p => {
+            p.innerHTML = formatText(p.textContent);
+        });
+        </script>
+    </body>
+    </html>
+    
